@@ -1,25 +1,14 @@
 // Earthquake data link
 var EarthquakeLink = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson"
 
-// Perform a GET request to the query URL
-// Perform a GET request to the query URL
+// Tectonic plates link
+var TectonicPlatesLink = "https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json"
+
+// Perform a GET request to the Earthquake query URL
 d3.json(EarthquakeLink, function(data) {
     // Once we get a response, send the data.features object to the createFeatures function
     createFeatures(data.features);
 });
-
-function getColor(d) {
-  return d > 5 ? '#F30' :
-  d > 4  ? '#F60' :
-  d > 3  ? '#F90' :
-  d > 2  ? '#FC0' :
-  d > 1   ? '#FF0' :
-            '#9F3';
-}
-
-function getRadius(value){
-  return value*40000
-}
 
 function createFeatures(earthquakeData) {       
 
@@ -64,17 +53,32 @@ function createMap(earthquakes) {
     "Light Map": lightMap
   };
 
+  // Add a tectonic plate layer
+  var tectonicPlates = new L.LayerGroup();
+
   // Create overlay object to hold our overlay layer
   var overlayMaps = {
-    Earthquakes: earthquakes
+    Earthquakes: earthquakes,
+    "Tectonic Plates": tectonicPlates
   };
 
   // Create our map, giving it the streetmap and earthquakes layers to display on load
   var myMap = L.map("map", {
     center: [31.7, -7.09],
     zoom: 2.5,
-    layers: [lightMap, earthquakes]
+    layers: [lightMap, earthquakes, tectonicPlates]
   });
+
+   // Add Fault lines data
+   d3.json(TectonicPlatesLink, function(plateData) {
+     // Adding our geoJSON data, along with style information, to the tectonicplates
+     // layer.
+     L.geoJson(plateData, {
+       color: "blue",
+       weight: 2
+     })
+     .addTo(tectonicPlates);
+   });
 
   // Create a layer control
   // Pass in our baseMaps and overlayMaps
@@ -103,3 +107,17 @@ function createMap(earthquakes) {
 
   legend.addTo(myMap);
 }
+
+function getColor(d) {
+  return d > 5 ? '#F30' :
+  d > 4  ? '#F60' :
+  d > 3  ? '#F90' :
+  d > 2  ? '#FC0' :
+  d > 1   ? '#FF0' :
+            '#9F3';
+}
+
+function getRadius(value){
+  return value*40000
+}
+

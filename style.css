@@ -1,6 +1,6 @@
-/* html{
+html{
     background-color:black;
-} */
+}
 
 body{
     background-color: black;
@@ -15,7 +15,6 @@ body{
     height: 100%;
     background-size: cover;
     overflow: hidden;
-    /* url("earthquake.jpeg") center center */
 }
 
 #map{
