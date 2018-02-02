@@ -4,3 +4,8 @@ Created a map using Leaflet that plots all of the earthquakes and faultlines bas
 
 https://ruchichandra.github.io/Earthquake-Visualization/
 
+
+![myimage-alt-tag](https://github.com/ruchichandra/Earthquake-Visualization/blob/master/Earthquake%20Visualization.PNG)
+
+
+
